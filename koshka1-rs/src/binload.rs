@@ -1,3 +1,5 @@
+pub mod binload;
+
 use std::fs;
 
 fn binload(path: &str) -> Vec<u8> {
