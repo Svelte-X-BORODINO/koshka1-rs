@@ -1,4 +1,3 @@
-pub mod cpu;
 
 #[derive(Debug)]
 struct KoshkaCPU {
