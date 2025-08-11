@@ -8,10 +8,10 @@ struct KoshkaCPU {
 trait Funcs {
     fn init_cpu(&mut self);
     fn print_status(&self);
-    fn kadd(&mut self, a: i8, b: i8);
-    fn ksub(&mut self, a: i8, b: i8);
-    fn kmul(&mut self, a: i8, b: i8);
-    fn kdiv(&mut self, a: i8, b: i8);
+    fn kadd(&mut self, a: u8, b: u8);
+    fn ksub(&mut self, a: u8, b: u8);
+    fn kmul(&mut self, a: u8, b: u8);
+    fn kdiv(&mut self, a: u8, b: u8);
 }
 
 impl Funcs for KoshkaCPU {
