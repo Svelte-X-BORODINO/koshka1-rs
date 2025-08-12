@@ -1,6 +1,6 @@
 pub struct VideoController {
     vram: [u8, 80 * 25];
-    buf: [u8, 80 * 25];
+    buf: [u8, 2000];
 } 
 
 trait Funcs {
@@ -12,6 +12,6 @@ trait Funcs {
 impl Funcs for VideoController {
     fn init_cpu() {
         
-        
+
     }
 }
