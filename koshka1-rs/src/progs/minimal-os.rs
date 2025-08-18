@@ -1,15 +1,14 @@
-use std::{
-    io,
-    fs
-};
+use std::{fs, io};
 
-use crate::{
-    cpu,
-    binload,
-    shell
-};
+use crate::{binload, cpu, shell, video};
 
 use core::process::Command;
 
+fn init() {
+    init_cpu();
+    dispd("CPU Initialized");
+    init_video();
+    
+}
 
-
+fn main() {}

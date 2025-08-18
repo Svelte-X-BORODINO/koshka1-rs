@@ -27,26 +27,30 @@ impl Funcs for KoshkaCPU {
     fn print_status(&self) {
         println!("{:#?}", self);
     }
-    
+
     fn kadd(&mut self, a: u8, b: u8) {
         dispd("kadd({}, {}): {}", a, b, a + b);
     }
-    
+
     fn ksub(&mut self, a: u8, b: u8) {
         dispd("ksub({}, {}): {}", a, b, a - b);
     }
-    
+
     fn kmul(&mut self, a: u8, b: u8) {
         dispd("kmul({}, {}): {}", a, b, a * b);
     }
-    
+
     fn kdiv(&mut self, a: u8, b: u8) {
+        if b == 0 {
+            panic_cpu("div_by_zero")
+        }
         dispd("kdiv({}, {}): {}", a, b, a / b);
     }
-    
-    fn panic_cpu(reason: &str) -> Result<bool, &'static str> {
-        disp("panic cpu#0");
+
+    fn panic_cpu(reason: impl std::fmt::Display) -> Result<()> {
+        disp("panic cpu#0 res={}", reason);
         dispd("Panic recieved. CPU halted.");
-        Ok(false);
+        loop {}
+        Ok(())
     }
 }
