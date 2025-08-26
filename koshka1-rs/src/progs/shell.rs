@@ -1,17 +1,17 @@
-use crate::binload;
 use std::env;
 use std::fs;
 use std::io::{self, Write};
-use std::process::Command;
 
-macro_rules! help {
-    () => {
-        println!("Available commands:");
-        println!("help, mkdir [DIR], cd [DIR], load [FILE].exe, echo [TEXT], exit");
-    };
+
+#[path = "../binload.rs"]
+mod binload;
+
+fn show_help() {
+    println!("Available commands:");
+    println!("help, mkdir [DIR], cd [DIR], load [FILE].exe, echo [TEXT], exit");
 }
 
-pub fn main() {
+pub fn shell() {
     loop {
         print!("k-os -> $ ");
         io::stdout().flush().unwrap();
@@ -21,16 +21,14 @@ pub fn main() {
 
         let mut parts = input.trim().split_whitespace();
         let command = parts.next().unwrap_or("");
-        let args: Vec<&str> = parts.collect();
+        let args: Vec<&str> = parts.collect(); // Изменил на Vec<&str>
 
         match command {
-            "help" => help!(),
+            "help" => show_help(),
             "mkdir" => {
                 if let Some(dir_name) = args.get(0) {
                     if let Err(e) = fs::create_dir(dir_name) {
                         eprintln!("mkdir: error: {}", e);
-                    } else {
-                        fs::create_dir(args.get(0));
                     }
                 } else {
                     println!("Usage: mkdir [DIR]. Try 'help' for more information");
@@ -38,10 +36,8 @@ pub fn main() {
             }
             "cd" => {
                 if let Some(dir_name) = args.get(0) {
-                    if let Err(e) = fs::set_current_dir(dir_name) {
+                    if let Err(e) = env::set_current_dir(dir_name) {
                         eprintln!("cd: error: {}", e);
-                    } else {
-                        fs::set_current_dir(dir_name)
                     }
                 } else {
                     println!("Usage: cd [DIR]. Try 'help' for more information");
@@ -49,7 +45,8 @@ pub fn main() {
             }
             "load" => {
                 if let Some(prog) = args.get(0) {
-                    if let Err(e) = prog_run(args.get(0)) {
+                    // Предполагаем, что есть функция binload::run
+                    if let Err(e) = binload::prog_run(prog) {
                         eprintln!("load: error: {}", e);
                     }
                 } else {
@@ -57,14 +54,10 @@ pub fn main() {
                 }
             }
             "echo" => {
-                if let Some(text) = args.get(0) {
-                    if let Err(e) = println!("{}", args.get(0)) {
-                        eprintln!("echo: error: {}", e);
-                    } else {
-                        println!("{}", args.get(0));
-                    }
+                if !args.is_empty() {
+                    println!("{}", args.join(" "));
                 } else {
-                    println!("Usage: echo [TEXT]. Try 'help' for more information")
+                    println!("Usage: echo [TEXT]. Try 'help' for more information");
                 }
             }
             "exit" => break,

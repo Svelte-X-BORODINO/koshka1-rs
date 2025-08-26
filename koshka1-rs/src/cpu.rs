@@ -1,11 +1,11 @@
-use crate::video;
+use crate::video::{disp, dispd};
 
 #[derive(Debug)]
 struct KoshkaCPU {
     k: [u8; 5],
     l_cache: [u8; 16384],
-    kadv: &str,
-    kadv2: &str,
+    kadv: str,
+    kadv2: str,
 }
 trait Funcs {
     fn init_cpu(&mut self);
@@ -14,7 +14,7 @@ trait Funcs {
     fn ksub(&mut self, a: u8, b: u8);
     fn kmul(&mut self, a: u8, b: u8);
     fn kdiv(&mut self, a: u8, b: u8);
-    fn panic_cpu(reason: &str) -> Result<bool>;
+    fn panic_cpu(reason: &str) -> Result<bool, &'static str>;
 }
 
 impl Funcs for KoshkaCPU {
@@ -24,6 +24,14 @@ impl Funcs for KoshkaCPU {
         self.kadv = "".to_string();
         self.kadv2 = "".to_string();
     }
+
+    fn panic_cpu(reason: impl std::fmt::Display) -> Result<()> {
+        disp("panic cpu#0 res={}", reason);
+        dispd("Panic recieved. CPU halted.");
+        loop {}
+        Ok(())
+    }
+
     fn print_status(&self) {
         println!("{:#?}", self);
     }
@@ -47,10 +55,4 @@ impl Funcs for KoshkaCPU {
         dispd("kdiv({}, {}): {}", a, b, a / b);
     }
 
-    fn panic_cpu(reason: impl std::fmt::Display) -> Result<()> {
-        disp("panic cpu#0 res={}", reason);
-        dispd("Panic recieved. CPU halted.");
-        loop {}
-        Ok(())
-    }
 }

@@ -1,11 +1,11 @@
-pub mod binload;
-
 use std::fs;
+use std::io::Result;
 
-fn binload(path: &str) -> Vec<u8> {
-    fs::read(path).except("Failed to read binary")
+fn binload(path: &str) -> Result<()> {
+    fs::read(path);
+    Ok(())
 }
 
-fn prog_run(path: &str) {
+pub fn prog_run(path: &str) {
     binload(&path);
 }
