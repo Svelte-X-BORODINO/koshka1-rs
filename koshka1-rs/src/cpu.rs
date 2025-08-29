@@ -1,3 +1,4 @@
+
 use crate::video::{disp, dispd};
 
 #[derive(Debug)]
@@ -7,17 +8,10 @@ struct KoshkaCPU {
     kadv: str,
     kadv2: str,
 }
-trait Funcs {
-    fn init_cpu(&mut self);
-    fn print_status(&self);
-    fn kadd(&mut self, a: u8, b: u8);
-    fn ksub(&mut self, a: u8, b: u8);
-    fn kmul(&mut self, a: u8, b: u8);
-    fn kdiv(&mut self, a: u8, b: u8);
-    fn panic_cpu(reason: &str) -> Result<bool, &'static str>;
-}
 
-impl Funcs for KoshkaCPU {
+
+
+impl KoshkaCPU {
     fn init_cpu(&mut self) {
         self.k = [0; 5];
         self.l_cache = [0; 16384];

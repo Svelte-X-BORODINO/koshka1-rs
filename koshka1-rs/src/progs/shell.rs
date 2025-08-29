@@ -5,6 +5,7 @@ use std::io::{self, Write};
 
 #[path = "../binload.rs"]
 mod binload;
+use binload::BinaryLoad;
 
 fn show_help() {
     println!("Available commands:");
@@ -21,7 +22,7 @@ pub fn shell() {
 
         let mut parts = input.trim().split_whitespace();
         let command = parts.next().unwrap_or("");
-        let args: Vec<&str> = parts.collect(); // Изменил на Vec<&str>
+        let args: Vec<&str> = parts.collect(); 
 
         match command {
             "help" => show_help(),
@@ -45,8 +46,8 @@ pub fn shell() {
             }
             "load" => {
                 if let Some(prog) = args.get(0) {
-                    // Предполагаем, что есть функция binload::run
-                    if let Err(e) = binload::prog_run(prog) {
+                    
+                    if let Err(e) = BinaryLoad::binload(&prog) {
                         eprintln!("load: error: {}", e);
                     }
                 } else {

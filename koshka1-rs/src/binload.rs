@@ -1,11 +1,16 @@
-use std::fs;
 use std::io::Result;
+use std::fs;
 
-fn binload(path: &str) -> Result<()> {
-    fs::read(path);
-    Ok(())
+pub struct BinaryLoad<'a> {
+    name: &'a str,
 }
 
-pub fn prog_run(path: &str) {
-    binload(&path);
+impl<'a> BinaryLoad<'a> {
+    pub fn init_binload(name: &'a str) -> Self {
+        Self { name }
+    }
+
+    pub fn binload(&self) -> Result<Vec<u8>> {
+        fs::read(&self.name)
+    }
 }
