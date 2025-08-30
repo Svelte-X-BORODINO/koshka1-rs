@@ -1,6 +1,6 @@
 mod progs;
 
-use crate::progs::minimal_os; // *
+use crate::progs::minimal_os; 
 
 fn main() {
     

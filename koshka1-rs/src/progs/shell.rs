@@ -7,12 +7,14 @@ use std::io::{self, Write};
 mod binload;
 use binload::BinaryLoad;
 
+
+
 fn show_help() {
     println!("Available commands:");
     println!("help, mkdir [DIR], cd [DIR], load [FILE].exe, echo [TEXT], exit");
 }
 
-pub fn shell() {
+pub fn shell()  {
     loop {
         print!("k-os -> $ ");
         io::stdout().flush().unwrap();
@@ -20,8 +22,8 @@ pub fn shell() {
         let mut input = String::new();
         io::stdin().read_line(&mut input).unwrap();
 
-        let mut parts = input.trim().split_whitespace();
-        let command = parts.next().unwrap_or("");
+        let mut parts: std::str::SplitWhitespace<'_> = input.trim().split_whitespace();
+        let command: &str = parts.next().unwrap_or("");
         let args: Vec<&str> = parts.collect(); 
 
         match command {
@@ -47,7 +49,7 @@ pub fn shell() {
             "load" => {
                 if let Some(prog) = args.get(0) {
                     
-                    if let Err(e) = BinaryLoad::binload(&prog) {
+                    if let Err(e) = BinaryLoad::binload(args.get(0)) {
                         eprintln!("load: error: {}", e);
                     }
                 } else {

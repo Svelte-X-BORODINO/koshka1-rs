@@ -11,6 +11,6 @@ impl<'a> BinaryLoad<'a> {
     }
 
     pub fn binload(&self) -> Result<Vec<u8>> {
-        fs::read(&self.name)
+        fs::read(self.name)
     }
 }
