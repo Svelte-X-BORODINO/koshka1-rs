@@ -7,14 +7,12 @@ use std::io::{self, Write};
 mod binload;
 use binload::BinaryLoad;
 
-
-
 fn show_help() {
     println!("Available commands:");
     println!("help, mkdir [DIR], cd [DIR], load [FILE].exe, echo [TEXT], exit");
 }
 
-pub fn shell()  {
+pub fn shell() {
     loop {
         print!("k-os -> $ ");
         io::stdout().flush().unwrap();
@@ -46,10 +44,15 @@ pub fn shell()  {
                     println!("Usage: cd [DIR]. Try 'help' for more information");
                 }
             }
-            "load" => {
+            "read" => {
                 if let Some(prog) = args.get(0) {
                     
-                    if let Err(e) = BinaryLoad::binload(args.get(0)) {
+                }
+            }
+            "load" => {
+                if let Some(prog) = args.get(0) {
+                    let loader = BinaryLoad::init_binload(&prog);
+                    if let Err(e) = BinaryLoad::binload(&args.get(0)) {
                         eprintln!("load: error: {}", e);
                     }
                 } else {
