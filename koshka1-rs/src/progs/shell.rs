@@ -45,14 +45,17 @@ pub fn shell() {
                 }
             }
             "read" => {
-                if let Some(prog) = args.get(0) {
-                    
+                if let Some(file) = args.get(0) {
+                    let reader = BinaryLoad::new(&file);                    
+                    if let Err(e) = reader.read() { // *
+                        eprintln!("read: error: {}", e);
+                    }
                 }
             }
             "load" => {
                 if let Some(prog) = args.get(0) {
-                    let loader = BinaryLoad::init_binload(&prog);
-                    if let Err(e) = BinaryLoad::binload(&args.get(0)) {
+                    let loader = BinaryLoad::new(&prog);
+                    if let Err(e) = loader.run() { 
                         eprintln!("load: error: {}", e);
                     }
                 } else {
@@ -77,3 +80,4 @@ pub fn shell() {
         }
     }
 }
+// *: тут ошибка: expected 0 arguments, found 1

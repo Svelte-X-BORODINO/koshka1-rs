@@ -5,7 +5,7 @@ pub struct VideoController {
 
 
 impl VideoController {
-        pub fn init_video(&mut self) -> Self { 
+        pub fn new() -> Self { 
             Self { 
                 vram: [0; 80 * 25 * 2], buf: [0; 2000]  
             }

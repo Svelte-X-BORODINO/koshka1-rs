@@ -1,49 +1,52 @@
-use crate::video::{disp, dispd};
+#[path = "./video.rs"]
+mod video;
+use video::VideoController;
 
-#[derive(Debug)]
-struct KoshkaCPU {
+#[derive(Debug)] 
+pub struct KoshkaCPU {
     k: [u8; 5],
     l_cache: [u8; 16384],
-    kadv: str,
-    kadv2: str,
+    kadv: String,    
+    kadv2: String,   
 }
 
 impl KoshkaCPU {
-    fn init_cpu(&mut self) {
-        self.k = [0; 5];
-        self.l_cache = [0; 16384];
-        self.kadv = "".to_string();
-        self.kadv2 = "".to_string();
+    // Метод new должен быть статическим и возвращать экземпляр
+    pub fn new() -> Self {
+        Self {
+            k: [0; 5],
+            l_cache: [0; 16384],
+            kadv: String::new(),  
+            kadv2: String::new(), 
+        }
     }
 
-    fn panic_cpu(reason: impl std::fmt::Display) -> Result<()> {
-        disp("panic cpu#0 res={}", reason);
-        dispd("Panic recieved. CPU halted.");
+    fn panic_cpu(reason: impl std::fmt::Display) {
+        VideoController::disp(&format!("panic cpu#0 res={}", reason));
+        VideoController::dispd("Panic recieved. CPU halted.");
         loop {}
-        Ok(())
     }
 
-    fn print_status(&self) {
+    pub fn print_status(&self) {
         println!("{:#?}", self);
     }
 
-    fn kadd(&mut self, a: u8, b: u8) {
-        dispd("kadd({}, {}): {}", a, b, a + b);
+    pub fn kadd(&mut self, a: u8, b: u8) {
+        VideoController::dispd(&format!("kadd({}, {}): {}", a, b, a + b));
     }
 
-    fn ksub(&mut self, a: u8, b: u8) {
-        dispd("ksub({}, {}): {}", a, b, a - b);
+    pub fn ksub(&mut self, a: u8, b: u8) {
+        VideoController::dispd(&format!("ksub({}, {}): {}", a, b, a - b));
     }
 
-    fn kmul(&mut self, a: u8, b: u8) {
-        dispd("kmul({}, {}): {}", a, b, a * b);
+    pub fn kmul(&mut self, a: u8, b: u8) {
+        VideoController::dispd(&format!("kmul({}, {}): {}", a, b, a * b));
     }
 
-    fn kdiv(&mut self, a: u8, b: u8) {
+    pub fn kdiv(&mut self, a: u8, b: u8) {
         if b == 0 {
-            panic_cpu("div_by_zero")
+            Self::panic_cpu("div_by_zero") // Вызов статического метода
         }
-        dispd("kdiv({}, {}): {}", a, b, a / b);
+        VideoController::dispd(&format!("kdiv({}, {}): {}", a, b, a / b));
     }
-
 }
